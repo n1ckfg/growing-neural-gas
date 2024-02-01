@@ -12,10 +12,17 @@ gas.learn()
 la = latk.Latk(init=True)
 ls = latk.LatkStroke()
 
+limit = 10
+
 for i in range(0, len(gas.gng.vs)):
     point = gas.gng.vs[i]["weight"]
     lp = latk.LatkPoint(co=(point[0], point[2], point[1]))
     ls.points.append(lp)
+    if (len(ls.points) >= limit):
+        la.layers[0].frames[0].strokes.append(ls)
+        ls = latk.LatkStroke()
 
-la.layers[0].frames[0].strokes.append(ls)
+if (len(ls.points) > 1):
+    la.layers[0].frames[0].strokes.append(ls)
+
 la.write("test.latk")
