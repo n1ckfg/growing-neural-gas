@@ -1,10 +1,6 @@
 import trimesh
 import latk
 import neuralgas
-import numpy as np
-
-def dist(p1, p2):
-    return np.linalg.norm(p1 - p2)
 
 mesh = trimesh.load("test.ply")
 points = mesh.vertices
