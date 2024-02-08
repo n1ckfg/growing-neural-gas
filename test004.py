@@ -9,8 +9,8 @@ def dist(p1, p2):
 mesh = trimesh.load("test.ply")
 points = mesh.vertices
 
-# dataset, max_neurons=2000, max_iter=8, max_age=10, eb=0.1, en=0.006, alpha=0.5, beta=0.995, l=200
-gas = neuralgas.GrowingNeuralGas(points, max_neurons=1000, max_iter=1000, max_age=10, eb=0.1, en=0.006, alpha=0.5, beta=0.995, l=20)
+# defaults: max_neurons=2000, max_iter=8, max_age=10, eb=0.1, en=0.006, alpha=0.5, beta=0.995, l=200
+gas = neuralgas.GrowingNeuralGas(points, max_neurons=100000, max_iter=1000, max_age=10, eb=0.1, en=0.006, alpha=0.5, beta=0.995, l=200)
 gas.learn()
 
 la = latk.Latk(init=True)
