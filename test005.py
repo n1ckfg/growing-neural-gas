@@ -1,7 +1,6 @@
 import trimesh
 import latk
 import neuralgas
-from scipy.spatial.distance import cdist
 
 mesh = trimesh.load("test.ply")
 points = mesh.vertices
@@ -12,32 +11,17 @@ gas.learn()
 
 la = latk.Latk(init=True)
 
-edgeList = []
-
-for edge in gas.gng.es:    
-    point1 = gas.gng.vs[edge.source]["weight"]
-    point2 = gas.gng.vs[edge.target]["weight"]
-    edgeList.append((point1, point2))
-
-newEdgeList = []
-newEdge = []
-
-for edge in edgeList:
-    newEdge.append(edge[0])
-    newEdge.append(edge[1])
-    newEdgeList.append(newEdge)
-    newEdge = []
-
-for newEdge in newEdgeList:
+for edge in gas.gng.es:
     ls = latk.LatkStroke()
     
-    for point in newEdge:
-        lp = latk.LatkPoint(co=(point[0], point[2], point[1]))
-        ls.points.append(lp)
+    point1 = gas.gng.vs[edge.source]["weight"]
+    point2 = gas.gng.vs[edge.target]["weight"]
+  
+    lp1 = latk.LatkPoint(co=(point1[0], point1[2], point1[1]))
+    lp2 = latk.LatkPoint(co=(point2[0], point2[2], point2[1]))
+    ls.points.append(lp1)
+    ls.points.append(lp2)
 
     la.layers[0].frames[0].strokes.append(ls)
 
 la.write("test.latk")
-
-#radius = 0.001
-#cdist([points[i]], [points[strokeGroup[-1]]])[0][0] < radius:
