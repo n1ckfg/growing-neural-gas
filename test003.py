@@ -10,11 +10,10 @@ gas = neuralgas.GrowingNeuralGas(points, max_neurons=100, max_iter=1000, max_age
 gas.learn()
 
 la = latk.Latk(init=True)
-ls = latk.LatkStroke()
 
 for edge in gas.gng.es:
-
     if (edge["age"] < 2):
+        ls = latk.LatkStroke()
         point1 = gas.gng.vs[edge.source]["weight"]
         point2 = gas.gng.vs[edge.target]["weight"]
         
