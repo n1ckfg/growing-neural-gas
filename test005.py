@@ -23,16 +23,45 @@ for edge in gas.gng.es:
     
     edgeList.append((point1, point2))
 
-for edge in edgeList:
+newEdgeList = []
+newEdge = []
+
+for i in range(0, len(edgeList)):
+    if (i == 0):
+        point1 = edgeList[i][0]
+        point2 = edgeList[i][1]
+        newEdge.append(point1)
+        newEdge.append(point2)    
+    else:
+        point1 = edgeList[i][0]
+        point2 = edgeList[i][1]
+        lastPoint1 = edgeList[i-1][0]
+        lastPoint2 = edgeList[i-1][1]
+
+        matchingPoint1 = np.array_equal(point1, lastPoint1) or np.array_equal(point1, lastPoint2)
+        matchingPoint2 = np.array_equal(point2, lastPoint1) or np.array_equal(point2, lastPoint2)
+
+        if (matchingPoint1 == True and matchingPoint2 == False): # point 2 is new
+            newEdge.append(point2)
+        elif (matchingPoint1 == False and matchingPoint2 == True): # point 1 is new
+            newEdge.append(point1)
+        elif(matchingPoint1 == False and matchingPoint2 == False): # points 1 and 2 are new
+            newEdgeList.append(newEdge)
+            newEdge = []
+            newEdge.append(point1)
+            newEdge.append(point2)
+        elif (matchingPoint1 == True and matchingPoint2 == True):  # no new points
+            pass
+
+    if (i == len(edgeList) - 1 and len(newEdge) > 0):  # add unused points
+        newEdgeList.append(newEdge)
+
+for edge in newEdgeList:
     ls = latk.LatkStroke()
 
-    point1 = edge[0]
-    point2 = edge[1]
-
-    lp1 = latk.LatkPoint(co=(point1[0], point1[2], point1[1]))
-    lp2 = latk.LatkPoint(co=(point2[0], point2[2], point2[1]))
-    ls.points.append(lp1)
-    ls.points.append(lp2)
+    for point in edge:
+        lp = latk.LatkPoint(co=(point[0], point[2], point[1]))
+        ls.points.append(lp)
 
     la.layers[0].frames[0].strokes.append(ls)
 
