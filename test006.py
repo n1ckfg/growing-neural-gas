@@ -17,7 +17,7 @@ gas.learn()
 # 2. get edge indices
 edgeIndices = []
 for edge in gas.gng.es:
-    edgeIndices.append([edge.source, edge.target])
+    edgeIndices.append((edge.source, edge.target))
 
 # 3. merge edges with matching indices
 newEdgeIndices = []
@@ -31,7 +31,9 @@ while edgeIndices:
             edge = edge + edgeIndices.pop(i)
             break
 
+    edge = list(dict.fromkeys(edge)) # this removes repeated indices
     edge.sort()
+
     newEdgeIndices.append(edge)
 
 # 4. Get points from indices
@@ -43,7 +45,8 @@ for edge in newEdgeIndices:
     for index in edge:
         points.append(gas.gng.vs[index]["weight"])
     
-    points = sorted(points, key=lambda point: distance(point, [0,0,0]))
+    #points = sorted(points, key=lambda point: distance(point, points[0]))
+    points = sorted(points, key=lambda point: distance(point, (0,0,0)))
     edgeList.append(points)
 
 # 5. Convert points to Latk strokes
