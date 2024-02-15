@@ -28,16 +28,18 @@ for i in range(0, reps):
     while edgeIndices:
         edge = edgeIndices.pop(0)
         for j, matchingEdge in enumerate(edgeIndices):
+            '''
             if (i <= int(reps/2)):
                 if (edge[1] == matchingEdge[0]):
                     newEdge = edgeIndices.pop(j)
                     edge = edge + newEdge
                     break
             else:
-                if (edge[0] == matchingEdge[0] or edge[0] == matchingEdge[1] or edge[1] == matchingEdge[0] or edge[1] == matchingEdge[1]):
-                    newEdge = edgeIndices.pop(j)
-                    edge = edge + newEdge
-                    break
+            '''
+            if (edge[0] == matchingEdge[0] or edge[0] == matchingEdge[1] or edge[1] == matchingEdge[0] or edge[1] == matchingEdge[1]):
+                newEdge = edgeIndices.pop(j)
+                edge = edge + newEdge
+                break
 
         edge = list(dict.fromkeys(edge)) # this removes repeated indices
         print(edge)
