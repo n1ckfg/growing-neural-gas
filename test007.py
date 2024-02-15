@@ -20,51 +20,41 @@ for edge in gas.gng.es:
     edgeIndices.append((edge.source, edge.target))
 
 # 3. merge edges with matching indices
-reps = 5
+reps = 10
 
 for i in range(0, reps):
     newEdgeIndices = []
 
     while edgeIndices:
         edge = edgeIndices.pop(0)
-        for j, matchingEdge in enumerate(edgeIndices):
-            '''
-            if (i <= int(reps/2)):
-                if (edge[1] == matchingEdge[0]):
-                    newEdge = edgeIndices.pop(j)
-                    edge = edge + newEdge
-                    break
-            else:
-            '''
-            if (edge[0] == matchingEdge[0] or edge[0] == matchingEdge[1] or edge[1] == matchingEdge[0] or edge[1] == matchingEdge[1]):
+        for j, matchEdge in enumerate(edgeIndices):
+            if (edge[1] == matchEdge[0]):
                 newEdge = edgeIndices.pop(j)
                 edge = edge + newEdge
                 break
+            elif (edge[0] == matchEdge[1]):
+                newEdge = edgeIndices.pop(j)
+                edge = newEdge + edge
+                break        
 
         edge = list(dict.fromkeys(edge)) # this removes repeated indices
-        print(edge)
+        #edge.sort()
 
         newEdgeIndices.append(edge)
 
     edgeIndices = newEdgeIndices
 
-newEdgeIndices = []
-for edge in edgeIndices:
-    if (len(edge) > 2):
-        newEdgeIndices.append(edge)
-
 # 4. Get points from indices
 edgeList = []
 
-for edge in newEdgeIndices:
+for edge in edgeIndices:
     points = []
     
     for index in edge:
         points.append(gas.gng.vs[index]["weight"])
     
-    #points = sorted(points, key=lambda point: distance(point, points[0]))
-    points = sorted(points, key=lambda point: distance(point, (0,0,0)))
-    edgeList.append(points)
+        #points = sorted(points, key=lambda point: distance(point, points[0]))
+        edgeList.append(points)
 
 # 5. Convert points to Latk strokes
 la = latk.Latk(init=True)
